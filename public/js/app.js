@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const analyzeBtn = document.getElementById('analyze-btn');
     const errorMessage = document.getElementById('error-message');
     const resultSection = document.getElementById('result-section');
+    const loadingSection = document.getElementById('loading-section');
+    const historyList = document.getElementById('history-list');
+    const themeToggle = document.getElementById('theme-toggle');
     
     const sentimentVal = document.getElementById('sentiment-val');
     const primaryEmotionVal = document.getElementById('primary-emotion-val');
@@ -17,6 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const liveTime = document.getElementById('live-time');
     const dynamicGreeting = document.getElementById('dynamic-greeting');
+
+    // Dark mode logic
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            themeToggle.textContent = '🌙';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            themeToggle.textContent = '☀️';
+        }
+    });
 
     // Live Clock & Dynamic Greeting
     function updateTimeAndGreeting() {
@@ -86,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             showResult(data.result);
+            fetchHistory(); // 새로 분석된 기록 갱신
 
         } catch (error) {
             console.error("API Error:", error);
@@ -138,9 +162,52 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isLoading) {
             analyzeBtn.textContent = '분석 중...';
             analyzeBtn.disabled = true;
+            loadingSection.classList.remove('hidden');
         } else {
             analyzeBtn.textContent = '분석하기';
             analyzeBtn.disabled = false;
+            loadingSection.classList.add('hidden');
         }
     }
+
+    async function fetchHistory() {
+        try {
+            const response = await fetch('/api/history');
+            const data = await response.json();
+            if (data.success && data.data && data.data.length > 0) {
+                historyList.innerHTML = '';
+                data.data.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'history-item';
+                    
+                    // Truncate text for privacy
+                    let shortText = item.input_text;
+                    if (shortText.length > 30) {
+                        shortText = shortText.substring(0, 30) + '...';
+                    }
+                    
+                    el.innerHTML = `
+                        <span class="history-text">"${shortText}"</span>
+                        <span class="history-sentiment" style="background-color: ${getSentimentColor(item.sentiment)}">${item.sentiment}</span>
+                    `;
+                    historyList.appendChild(el);
+                });
+            } else {
+                historyList.innerHTML = '<p style="color:var(--color-gray);font-size:0.9rem;">아직 분석 기록이 없습니다.</p>';
+            }
+        } catch (error) {
+            console.error("Failed to fetch history:", error);
+            historyList.innerHTML = '<p style="color:var(--color-error);font-size:0.9rem;">기록을 불러오지 못했습니다.</p>';
+        }
+    }
+
+    function getSentimentColor(sentiment) {
+        if (sentiment === 'positive') return '#2E7D32';
+        if (sentiment === 'negative') return '#C62828';
+        if (sentiment === 'neutral') return '#616161';
+        return '#000000';
+    }
+
+    // 초기 로드 시 기록 불러오기
+    fetchHistory();
 });

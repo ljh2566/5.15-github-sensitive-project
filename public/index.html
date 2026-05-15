@@ -11,7 +11,10 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>Sentiment Analysis</h1>
+            <div class="header-top">
+                <h1>Sentiment Analysis</h1>
+                <button id="theme-toggle" class="icon-btn" aria-label="다크모드 전환">🌙</button>
+            </div>
             <p>문장의 감정을 분석해보세요.</p>
         </header>
 
@@ -31,6 +34,17 @@
             </section>
 
             <section id="error-message" class="error-message hidden"></section>
+
+            <section id="loading-section" class="loading-section card hidden">
+                <div class="skeleton-title"></div>
+                <div class="emotion-metrics">
+                    <div class="metric-card skeleton-card"></div>
+                    <div class="metric-card skeleton-card"></div>
+                    <div class="metric-card skeleton-card"></div>
+                </div>
+                <div class="skeleton-text"></div>
+                <div class="skeleton-text short"></div>
+            </section>
 
             <section id="result-section" class="result-section card hidden">
                 <h2>분석 결과</h2>
@@ -64,6 +78,13 @@
                 <div class="result-item recommendation-box hidden" id="recommendation-container">
                     <span class="label recommendation-label">💡 맞춤형 대응 가이드</span>
                     <p id="recommendation-val" class="recommendation-text"></p>
+                </div>
+            </section>
+
+            <section id="history-section" class="history-section">
+                <h3>📜 최근 사람들의 분석</h3>
+                <div id="history-list" class="history-list">
+                    <!-- History items will be rendered here -->
                 </div>
             </section>
         </main>

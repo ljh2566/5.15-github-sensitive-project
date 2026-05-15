@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { analyzeSentiment } = require('../services/openaiService');
-const { insertLog } = require('../services/logService');
+const { insertLog, getRecentLogs } = require('../services/logService');
 
 router.post('/analyze', async (req, res) => {
     const { text } = req.body;
@@ -29,6 +29,22 @@ router.post('/analyze', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+        });
+    }
+});
+
+router.get('/history', async (req, res) => {
+    try {
+        const logs = await getRecentLogs(5);
+        return res.status(200).json({
+            success: true,
+            data: logs
+        });
+    } catch (error) {
+        console.error("API /history Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "히스토리를 불러오는 중 오류가 발생했습니다."
         });
     }
 });

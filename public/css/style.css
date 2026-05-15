@@ -323,3 +323,174 @@ textarea:focus {
         padding: 24px;
     }
 }
+
+/* --- Added for UI/UX & Features --- */
+
+/* Dark Theme Variables */
+:root[data-theme="dark"] {
+    --color-bg: #121212;
+    --color-white: #1E1E1E;
+    --color-black: #FFFFFF;
+    --color-border: #333333;
+    --color-gray: #AAAAAA;
+    --color-error: #FF5252;
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--color-white);
+    border-color: var(--color-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] textarea {
+    background-color: #1A1A1A;
+    color: var(--color-black);
+}
+
+[data-theme="dark"] textarea:focus {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .emotion-metrics {
+    background-color: #252525;
+}
+
+[data-theme="dark"] .intensity-bar-bg {
+    background-color: #444444;
+}
+
+[data-theme="dark"] .recommendation-box {
+    background-color: #252525;
+}
+
+[data-theme="dark"] .error-message {
+    background-color: #4A1919;
+}
+
+/* Header Top */
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .icon-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Skeleton UI Loading */
+.loading-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@keyframes pulse {
+    0% { background-color: rgba(165, 165, 165, 0.1); }
+    50% { background-color: rgba(165, 165, 165, 0.3); }
+    100% { background-color: rgba(165, 165, 165, 0.1); }
+}
+
+[data-theme="dark"] @keyframes pulse {
+    0% { background-color: rgba(255, 255, 255, 0.05); }
+    50% { background-color: rgba(255, 255, 255, 0.15); }
+    100% { background-color: rgba(255, 255, 255, 0.05); }
+}
+
+.skeleton-title {
+    height: 32px;
+    width: 150px;
+    border-radius: 8px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-card {
+    height: 80px;
+    border-radius: 8px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-text {
+    height: 20px;
+    width: 100%;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+/* History Section */
+.history-section {
+    margin-top: 16px;
+}
+
+.history-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: var(--color-black);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .history-item:hover {
+    box-shadow: 0 4px 12px rgba(255,255,255,0.05);
+}
+
+.history-text {
+    font-size: 0.95rem;
+    color: var(--color-gray);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 16px;
+}
+
+.history-sentiment {
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    text-transform: uppercase;
+}
