@@ -7,6 +7,7 @@
     <meta name="description" content="사용자가 입력한 텍스트의 감정을 분석하여 긍정, 부정, 중립 결과를 제공하는 웹 서비스입니다.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -30,6 +31,12 @@
                     maxlength="1000"
                 ></textarea>
                 <div class="char-count"><span id="char-current">0</span> / 1000</div>
+                <div class="sample-chips">
+                    <span class="chip-label">추천 예시:</span>
+                    <button class="sample-chip" data-text="오늘 정말 행복해요! 최고의 하루입니다! 😊">😊 기쁜 날</button>
+                    <button class="sample-chip" data-text="정말 힘들고 지쳐서 아무것도 하기 싫어요. 😞">😞 지친 날</button>
+                    <button class="sample-chip" data-text="오늘 날씨가 맑네요. 그냥 평범한 하루예요. 😐">😐 평범한 날</button>
+                </div>
                 <button id="analyze-btn" class="primary-btn">분석하기</button>
             </section>
 
@@ -81,6 +88,67 @@
                 </div>
             </section>
 
+            <!-- 감정 점수 카드 -->
+            <section id="score-section" class="score-section card hidden">
+                <div class="score-header">
+                    <span class="score-title">🎯 오늘의 감정 점수</span>
+                    <span id="streak-badge" class="streak-badge hidden"></span>
+                </div>
+                <div class="score-body">
+                    <div id="score-grade" class="score-grade">-</div>
+                    <div id="score-number" class="score-number">-</div>
+                    <p id="score-msg" class="score-msg"></p>
+                </div>
+            </section>
+
+            <!-- 오늘의 운세 -->
+            <section id="fortune-section" class="fortune-section card">
+                <div class="fortune-header">
+                    <span class="fortune-title">🔮 오늘의 운세</span>
+                    <button id="fortune-btn" class="fortune-btn">운세 보기</button>
+                </div>
+                <div id="fortune-result" class="fortune-result hidden">
+                    <p id="fortune-today-msg" class="fortune-today-msg"></p>
+                    <div class="fortune-grid">
+                        <div class="fortune-item">
+                            <span class="fortune-label">전체운</span>
+                            <span id="fortune-overall-stars" class="fortune-stars"></span>
+                            <span id="fortune-overall-msg" class="fortune-item-msg"></span>
+                        </div>
+                        <div class="fortune-item">
+                            <span class="fortune-label">연애운</span>
+                            <span id="fortune-love-stars" class="fortune-stars"></span>
+                            <span id="fortune-love-msg" class="fortune-item-msg"></span>
+                        </div>
+                        <div class="fortune-item">
+                            <span class="fortune-label">금전운</span>
+                            <span id="fortune-money-stars" class="fortune-stars"></span>
+                            <span id="fortune-money-msg" class="fortune-item-msg"></span>
+                        </div>
+                        <div class="fortune-item">
+                            <span class="fortune-label">건강운</span>
+                            <span id="fortune-health-stars" class="fortune-stars"></span>
+                            <span id="fortune-health-msg" class="fortune-item-msg"></span>
+                        </div>
+                    </div>
+                    <div class="fortune-lucky">
+                        <span>🎨 행운의 색상: <strong id="fortune-color"></strong></span>
+                        <span>🔢 행운의 숫자: <strong id="fortune-number"></strong></span>
+                    </div>
+                </div>
+                <div id="fortune-loading" class="fortune-loading hidden">운세를 불러오는 중... ✨</div>
+                <div id="fortune-error" class="fortune-error hidden"></div>
+            </section>
+
+            <!-- 감정 변화 그래프 -->
+            <section id="graph-section" class="graph-section card hidden">
+                <h3>📈 감정 변화 그래프</h3>
+                <p class="graph-desc">최근 분석한 감정의 흐름을 보여줍니다.</p>
+                <div class="chart-wrapper">
+                    <canvas id="emotion-chart"></canvas>
+                </div>
+            </section>
+
             <section id="history-section" class="history-section">
                 <h3>📜 최근 사람들의 분석</h3>
                 <div id="history-list" class="history-list">
@@ -95,5 +163,31 @@
     </div>
 
     <script src="/js/app.js"></script>
+
+    <!-- 플로팅 챗봇 버튼 -->
+    <button id="chatbot-toggle" class="chatbot-fab" aria-label="AI 상담 챗봇 열기">💬</button>
+
+    <!-- 챗봇 창 -->
+    <div id="chatbot-window" class="chatbot-window hidden">
+        <div class="chatbot-header">
+            <div class="chatbot-info">
+                <span class="chatbot-avatar">🤖</span>
+                <div>
+                    <span class="chatbot-name">마음이</span>
+                    <span class="chatbot-status">AI 감정 상담사</span>
+                </div>
+            </div>
+            <button id="chatbot-close" class="icon-btn" aria-label="챗봇 닫기">✕</button>
+        </div>
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div class="chat-bubble bot">
+                안녕하세요! 저는 마음이예요. 😊<br>오늘 기분이 어떠세요? 편하게 이야기해 주세요.
+            </div>
+        </div>
+        <div class="chatbot-input-area">
+            <input id="chatbot-input" type="text" placeholder="메시지를 입력하세요..." maxlength="500">
+            <button id="chatbot-send" class="chatbot-send-btn">➤</button>
+        </div>
+    </div>
 </body>
 </html>
