@@ -1,8 +1,22 @@
-const supabase = require('../config/supabase');
+const { createClient } = require('@supabase/supabase-js');
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+
+let supabase = null;
+if (supabaseUrl && supabaseKey) {
+    try {
+        supabase = createClient(supabaseUrl, supabaseKey);
+    } catch (err) {
+        console.error('Supabase initialization error:', err);
+    }
+} else {
+    console.warn('Supabase credentials missing. Logging to DB will be skipped.');
+}
 
 async function insertLog(inputText, sentiment, primaryEmotion, intensity, confidence, reason, recommendation) {
     if (!supabase) {
-        console.log("Supabase is not configured. Skipping DB insert.");
+        console.warn('Supabase not initialized. Skipping log insertion.');
         return;
     }
 
@@ -12,22 +26,19 @@ async function insertLog(inputText, sentiment, primaryEmotion, intensity, confid
             .insert([
                 { 
                     input_text: inputText, 
-                    sentiment: sentiment,
-                    primary_emotion: primaryEmotion,
-                    intensity: intensity,
-                    confidence: confidence, 
-                    reason: reason,
-                    recommendation: recommendation
+                    sentiment, 
+                    primary_emotion: primaryEmotion, 
+                    intensity, 
+                    confidence, 
+                    reason, 
+                    recommendation 
                 }
             ]);
-
-        if (error) {
-            console.error("Supabase Insert Error:", error);
-        } else {
-            console.log("Log saved to Supabase successfully.");
-        }
-    } catch (err) {
-        console.error("Supabase Exception:", err);
+        
+        if (error) throw error;
+        console.log('Log saved to Supabase successfully.');
+    } catch (error) {
+        console.error('Failed to save log to Supabase:', error.message);
     }
 }
 
