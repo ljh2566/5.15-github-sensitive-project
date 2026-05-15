@@ -23,7 +23,8 @@ app.use((req, res, next) => {
   }
 });
 
-if (process.env.NODE_ENV !== 'production') {
+// For local development
+if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
