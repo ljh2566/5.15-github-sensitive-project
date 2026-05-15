@@ -22,8 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatbotSend = document.getElementById('chatbot-send');
     const chatbotMessages = document.getElementById('chatbot-messages');
 
+    // Fortune elements
+    const fortuneBtn = document.getElementById('fortune-btn');
+    const fortuneResult = document.getElementById('fortune-result');
+    const fortuneLoading = document.getElementById('fortune-loading');
+    const fortuneError = document.getElementById('fortune-error');
+    const fortuneTodayMsg = document.getElementById('fortune-today-msg');
+    const fortuneColor = document.getElementById('fortune-color');
+    const fortuneNumber = document.getElementById('fortune-number');
+    const fortuneOverallStars = document.getElementById('fortune-overall-stars');
+    const fortuneLoveStars = document.getElementById('fortune-love-stars');
+    const fortuneMoneyStars = document.getElementById('fortune-money-stars');
+    const fortuneHealthStars = document.getElementById('fortune-health-stars');
+    const fortuneOverallMsg = document.getElementById('fortune-overall-msg');
+    const fortuneLoveMsg = document.getElementById('fortune-love-msg');
+    const fortuneMoneyMsg = document.getElementById('fortune-money-msg');
+    const fortuneHealthMsg = document.getElementById('fortune-health-msg');
+
     let emotionChart = null;
     let chatHistory = []; // 대화 히스토리 (챗봇용)
+    let currentSentiment = null; // 최신 분석 결과 감정 저장
 
     const sentimentVal = document.getElementById('sentiment-val');
     const primaryEmotionVal = document.getElementById('primary-emotion-val');
@@ -135,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             showResult(data.result);
+            currentSentiment = data.result.sentiment; // 감정 저장
             fetchHistory(); // 새로 분석된 기록 갱신
 
         } catch (error) {
@@ -436,5 +455,59 @@ document.addEventListener('DOMContentLoaded', () => {
         chatbotMessages.appendChild(el);
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         return el;
+    }
+
+    // ===== 오늘의 운세 기능 =====
+    fortuneBtn.addEventListener('click', async () => {
+        fortuneBtn.disabled = true;
+        fortuneResult.classList.add('hidden');
+        fortuneError.classList.add('hidden');
+        fortuneLoading.classList.remove('hidden');
+
+        try {
+            const response = await fetch('/api/fortune', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sentiment: currentSentiment })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                renderFortune(data.fortune);
+                fortuneResult.classList.remove('hidden');
+            } else {
+                fortuneError.textContent = data.message || '운세를 가져오지 못했습니다.';
+                fortuneError.classList.remove('hidden');
+            }
+        } catch (err) {
+            console.error('Fortune fetch error:', err);
+            fortuneError.textContent = '서버 통신에 실패했습니다.';
+            fortuneError.classList.remove('hidden');
+        } finally {
+            fortuneLoading.classList.add('hidden');
+            fortuneBtn.disabled = false;
+        }
+    });
+
+    function renderFortune(fortune) {
+        fortuneTodayMsg.textContent = fortune.today_message;
+        fortuneColor.textContent = fortune.lucky_color;
+        fortuneNumber.textContent = fortune.lucky_number;
+
+        renderStars(fortuneOverallStars, fortune.overall.stars);
+        fortuneOverallMsg.textContent = fortune.overall.message;
+
+        renderStars(fortuneLoveStars, fortune.love.stars);
+        fortuneLoveMsg.textContent = fortune.love.message;
+
+        renderStars(fortuneMoneyStars, fortune.money.stars);
+        fortuneMoneyMsg.textContent = fortune.money.message;
+
+        renderStars(fortuneHealthStars, fortune.health.stars);
+        fortuneHealthMsg.textContent = fortune.health.message;
+    }
+
+    function renderStars(container, count) {
+        container.textContent = '★'.repeat(count) + '☆'.repeat(5 - count);
     }
 });
