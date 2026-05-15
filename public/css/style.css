@@ -1,0 +1,325 @@
+:root {
+    --color-bg: #F2F2F2;
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-border: #E0E0E0;
+    --color-gray: #666666;
+    --color-error: #D32F2F;
+    --border-radius: 16px;
+    --btn-radius: 999px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-black);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.header {
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+}
+
+.header p {
+    color: var(--color-gray);
+    font-size: 1.1rem;
+}
+
+
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+
+.char-count {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--color-gray);
+}
+
+.primary-btn {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    border: 2px solid var(--color-black);
+    border-radius: var(--btn-radius);
+    padding: 16px 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.primary-btn:hover {
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+.primary-btn:disabled {
+    background-color: var(--color-gray);
+    border-color: var(--color-gray);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.error-message {
+    color: var(--color-error);
+    background-color: #ffebee;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.result-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.result-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--color-black);
+    padding-bottom: 12px;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.result-item .label {
+    font-size: 0.9rem;
+    color: var(--color-gray);
+    font-weight: 600;
+}
+
+.result-item .value {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: var(--btn-radius);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    width: fit-content;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+.reason-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: var(--color-bg);
+    padding: 16px;
+    border-radius: 8px;
+    white-space: pre-wrap; /* Preserve line breaks for detailed reasons */
+}
+
+/* Premium Recommendation Box */
+.recommendation-box {
+    margin-top: 12px;
+    background-color: #FAFAFA;
+    border-left: 4px solid var(--color-black);
+    padding: 20px;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.recommendation-label {
+    font-size: 1.05rem !important;
+    color: var(--color-black) !important;
+    font-weight: 800 !important;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.recommendation-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #333333;
+    font-weight: 500;
+    white-space: pre-wrap;
+}
+
+.footer {
+    text-align: center;
+    color: var(--color-gray);
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* Greeting Box & Time */
+.greeting-box {
+    text-align: center;
+    margin-bottom: 8px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.live-time {
+    font-size: 1.1rem;
+    color: var(--color-gray);
+    font-weight: 500;
+}
+
+.dynamic-greeting {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-top: 4px;
+}
+
+/* Enhancing Card & Input 3D/Glow */
+.card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 16px;
+    font-size: 1.05rem;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    resize: none;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #FAFAFA;
+}
+
+textarea:focus {
+    border-color: var(--color-black);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Emotion Metrics Layout */
+.emotion-metrics {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    background-color: #F8F9FA;
+    padding: 20px;
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.metric-card {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    color: var(--color-gray);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--color-black);
+}
+
+.intensity-bar-bg {
+    width: 100%;
+    height: 8px;
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.intensity-bar-fill {
+    height: 100%;
+    background-color: var(--color-black);
+    width: 0%;
+    transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.intensity-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-top: 2px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .emotion-metrics {
+        flex-direction: column;
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px 16px;
+    }
+    .header h1 {
+        font-size: 2rem;
+    }
+    .card {
+        padding: 24px;
+    }
+}

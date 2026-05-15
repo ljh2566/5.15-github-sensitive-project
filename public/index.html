@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>감성 분석 서비스</title>
+    <meta name="description" content="사용자가 입력한 텍스트의 감정을 분석하여 긍정, 부정, 중립 결과를 제공하는 웹 서비스입니다.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Sentiment Analysis</h1>
+            <p>문장의 감정을 분석해보세요.</p>
+        </header>
+
+        <main class="main-content">
+            <section class="input-section card">
+                <div class="greeting-box">
+                    <p id="live-time" class="live-time">00:00</p>
+                    <p id="dynamic-greeting" class="dynamic-greeting">안녕하세요! 기분이 어떠신가요?</p>
+                </div>
+                <textarea 
+                    id="text-input" 
+                    placeholder="분석할 텍스트를 입력하세요. (최대 1000자)"
+                    maxlength="1000"
+                ></textarea>
+                <div class="char-count"><span id="char-current">0</span> / 1000</div>
+                <button id="analyze-btn" class="primary-btn">분석하기</button>
+            </section>
+
+            <section id="error-message" class="error-message hidden"></section>
+
+            <section id="result-section" class="result-section card hidden">
+                <h2>분석 결과</h2>
+                
+                <div class="emotion-metrics">
+                    <div class="metric-card">
+                        <span class="metric-label">기본 감정</span>
+                        <span id="sentiment-val" class="metric-value badge"></span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">핵심 감정</span>
+                        <span id="primary-emotion-val" class="metric-value"></span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">감정 강도</span>
+                        <div class="intensity-bar-bg">
+                            <div id="intensity-bar" class="intensity-bar-fill"></div>
+                        </div>
+                        <span id="intensity-val" class="intensity-text"></span>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <span class="label">신뢰도:</span>
+                    <span id="confidence-val" class="value"></span>
+                </div>
+                <div class="result-item">
+                    <span class="label">분석 이유:</span>
+                    <p id="reason-val" class="reason-text"></p>
+                </div>
+                <div class="result-item recommendation-box hidden" id="recommendation-container">
+                    <span class="label recommendation-label">💡 맞춤형 대응 가이드</span>
+                    <p id="recommendation-val" class="recommendation-text"></p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Sentiment Analysis Service.</p>
+        </footer>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
